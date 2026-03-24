@@ -15,6 +15,7 @@ defmodule PlugImageProcessing.Config do
     {"watermarkimage", Operations.WatermarkImage},
     {"extract", Operations.ExtractArea},
     {"resize", Operations.Resize},
+    {"blur", Operations.Blur},
     {"smartcrop", Operations.Smartcrop},
     {"pipeline", Operations.Pipeline},
     {"info", Operations.Info}

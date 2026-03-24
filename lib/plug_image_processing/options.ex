@@ -55,4 +55,17 @@ defmodule PlugImageProcessing.Options do
       _ -> {:error, :bad_request}
     end
   end
+
+  def cast_float(value, default \\ nil)
+
+  def cast_float(nil, default), do: {:ok, default}
+  def cast_float(value, _) when is_float(value), do: {:ok, value}
+  def cast_float(value, _) when is_integer(value), do: {:ok, value * 1.0}
+
+  def cast_float(value, _) do
+    case Float.parse(value) do
+      {value, _} -> {:ok, value}
+      _ -> {:error, :bad_request}
+    end
+  end
 end
