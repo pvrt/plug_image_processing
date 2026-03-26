@@ -1,7 +1,7 @@
 defmodule PlugImageProcessing.Operations.Resize do
   @moduledoc false
-  import PlugImageProcessing.Options
 
+  import PlugImageProcessing.Options
   alias Vix.Vips.Image
 
   defstruct image: nil, width: nil, height: nil
@@ -20,20 +20,30 @@ defmodule PlugImageProcessing.Operations.Resize do
 
   defimpl PlugImageProcessing.Operation do
     def valid?(operation) do
-      if operation.width do
+      if operation.width || operation.height do
         true
       else
-        {:error, :missing_width}
+        {:error, :missing_dimension}
       end
     end
 
     def process(operation, _config) do
-      hscale = operation.width / Image.width(operation.image) * 1.0
-      vscale = if operation.height, do: operation.height / Image.height(operation.image)
+      image_width = Image.width(operation.image) * 1.0
+      image_height = Image.height(operation.image) * 1.0
 
-      options = PlugImageProcessing.Options.build(vscale: vscale)
+      scale =
+        cond do
+          operation.width && operation.height ->
+            min(operation.width / image_width, operation.height / image_height)
 
-      Vix.Vips.Operation.resize(operation.image, hscale, options)
+          operation.width ->
+            operation.width / image_width
+
+          operation.height ->
+            operation.height / image_height
+        end
+
+      Vix.Vips.Operation.resize(operation.image, scale)
     end
   end
 end
