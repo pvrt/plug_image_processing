@@ -16,6 +16,7 @@ defmodule PlugImageProcessing.Config do
     {"extract", Operations.ExtractArea},
     {"resize", Operations.Resize},
     {"blur", Operations.Blur},
+    {"thumbnail", Operations.Thumbnail},
     {"smartcrop", Operations.Smartcrop},
     {"pipeline", Operations.Pipeline},
     {"info", Operations.Info}
